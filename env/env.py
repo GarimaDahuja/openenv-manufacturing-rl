@@ -31,6 +31,7 @@ class ManufacturingEnv:
     def step(self, action):
         reward = 0.0
         done = False
+        completed_jobs = 0
 
         machine = next((m for m in self.state.machines if m.id == action.machine_id), None)
         job = next((j for j in self.state.job_queue if j.id == action.job_id), None)
@@ -55,12 +56,17 @@ class ManufacturingEnv:
 
                 if m.remaining_time <= 0:
                     m.status = "idle"
-                    reward += 1.0  #job completed reward
+                    completed_jobs += 1 #job completed reward
 
             elif m.status == "broken":
                 #simple recovery
                 if random.random() < 0.3:
                     m.status = "idle"
+
+        idle_machines = 0
+        for m in self.state.machines:
+            if m.status == "idle":
+                idle_machines += 1
 
         #time update
         self.state.current_time += 1
@@ -69,6 +75,18 @@ class ManufacturingEnv:
         #end condition
         if self.current_step >= 20 or len(self.state.job_queue) == 0:
             done = True
+
+        #completed jobs reward
+        reward += completed_jobs * 1.0
+
+        #idle machines penalty
+        reward -= idle_machines * 0.2
+
+        #delay penalty
+        reward -= self.state.current_time * 0.01
+
+        #normalize reward b/w 0-1
+        reward = max(0.0, min(1.0, reward))
 
         return self.state, reward, done, {}
 
