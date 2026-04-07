@@ -1,6 +1,6 @@
 import os
 from openai import OpenAI
-
+import time
 from env.env import ManufacturingEnv
 from agent import BaselineAgent
 
@@ -65,3 +65,5 @@ def run_inference():
 
 if __name__ == "__main__":
     run_inference()
+    while True:
+        time.sleep(60)
