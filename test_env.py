@@ -1,23 +1,21 @@
 from env.env import ManufacturingEnv
-from env.models import Action
 from env.tasks import task_idle_time, task_completion_time, task_breakdown_handling, overall_score
+from agent import BaselineAgent
 
 env = ManufacturingEnv()
+agent = BaselineAgent()
+
 state = env.reset()
 
 print("Initial State:", state)
 
 for _ in range(10):
-    if len(state.job_queue) > 0:
-        job_id = state.job_queue[0].id
-    else:
-        job_id = 0
-
-    action = Action(machine_id=0, job_id=job_id)
+    action = agent.select_action(state)
 
     state, reward, done, _ = env.step(action)
 
     print("Time:", state.current_time)
+    print("Action:", action)
     print("Machines:", state.machines)
     print("Queue:", state.job_queue)
     print("Reward:", reward)
