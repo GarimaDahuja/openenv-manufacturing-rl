@@ -1,5 +1,6 @@
 from env.env import ManufacturingEnv
 from env.models import Action
+from env.tasks import task_idle_time, task_completion_time, task_breakdown_handling, overall_score
 
 env = ManufacturingEnv()
 state = env.reset()
@@ -24,3 +25,8 @@ for _ in range(10):
 
     if done:
         break
+
+print("Task 1:", task_idle_time(env))
+print("Task 2:", task_completion_time(env))
+print("Task 3:", task_breakdown_handling(env))
+print("Overall:", overall_score(env))
