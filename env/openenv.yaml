@@ -3,3 +3,71 @@ version: 0.1
 
 environment:
   entry_point: env.env:ManufacturingEnv
+
+observation_space:
+  type: object
+  properties:
+    machines:
+      type: array
+      items:
+        type: object
+        properties:
+          id:
+            type: integer
+          status:
+            type: string
+          remaining_time:
+            type: integer
+          breakdown_prob:
+            type: number
+        required:
+          - id
+          - status
+          - remaining_time
+          - breakdown_prob
+
+    job_queue:
+      type: array
+      items:
+        type: object
+        properties:
+          id:
+            type: integer
+          processing_time:
+            type: integer
+          priority:
+            type: integer
+        required:
+          - id
+          - processing_time
+          - priority
+
+    current_time:
+      type: integer
+
+  required:
+    - machines
+    - job_queue
+    - current_time
+
+action_space:
+  type: object
+  properties:
+    machine_id:
+      type: integer
+    job_id:
+      type: integer
+
+  required:
+    - machine_id
+    - job_id
+
+tasks:
+  - name: minimize_idle_time
+    description: Keep machines busy to maximize utilization
+
+  - name: optimize_completion_time
+    description: Complete all jobs as quickly as possible
+
+  - name: handle_machine_failures
+    description: Maintain performance despite machine breakdowns
