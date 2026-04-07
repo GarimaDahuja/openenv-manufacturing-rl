@@ -1,13 +1,11 @@
 ---
-
 title: Manufacturing Process Optimization
 emoji: ⚙️
 colorFrom: blue
 colorTo: green
 sdk: docker
-app_file: inference.py
 pinned: false
--------------
+---
 
 # Manufacturing Process Optimization (OpenEnv RL)
 
