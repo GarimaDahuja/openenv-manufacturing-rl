@@ -1,0 +1,5 @@
+name: manufacturing-env
+version: 0.1
+
+environment:
+  entry_point: env.env:ManufacturingEnv
