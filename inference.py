@@ -1,16 +1,13 @@
 import os
-from openai import OpenAI
 import time
+from openai import OpenAI
 from env.env import ManufacturingEnv
 from agent import BaselineAgent
 
-#req env variables
+#req  env variables
 API_BASE_URL = os.getenv("API_BASE_URL", "https://api.openai.com/v1")
 MODEL_NAME = os.getenv("MODEL_NAME", "gpt-4.1-mini")
-HF_TOKEN = os.getenv("HF_TOKEN")
-
-if HF_TOKEN is None:
-    HF_TOKEN = "dummy"
+HF_TOKEN = os.getenv("HF_TOKEN", "dummy")
 
 #OpenAI client
 client = OpenAI(
@@ -29,6 +26,7 @@ def run_inference():
     done = False
     step_count = 0
     rewards = []
+    success = True
 
     try:
         while not done:
@@ -37,6 +35,8 @@ def run_inference():
             state, reward, done, _ = env.step(action)
 
             step_count += 1
+
+            reward = round(float(reward), 2)
             rewards.append(f"{reward:.2f}")
 
             print(
@@ -46,8 +46,6 @@ def run_inference():
                 f"done={str(done).lower()} "
                 f"error=null"
             )
-
-        success = True
 
     except Exception as e:
         success = False
@@ -59,11 +57,12 @@ def run_inference():
     print(
         f"[END] success={str(success).lower()} "
         f"steps={step_count} "
-        f"rewards={','.join(rewards)}"
+        f"rewards={','.join(rewards) if rewards else '0.00'}"
     )
 
 
 if __name__ == "__main__":
     run_inference()
+
     while True:
         time.sleep(60)
