@@ -1,9 +1,17 @@
 [project]
 name = "manufacturing-env"
 version = "0.1.0"
-description = "Manufacturing process optimization OpenEnv environment"
+description = "Manufacturing OpenEnv environment"
 authors = [{ name = "Garima" }]
-dependencies = []
+
+dependencies = [
+    "openenv-core>=0.2.0",
+    "fastapi",
+    "uvicorn"
+]
+
+[project.scripts]
+server = "server.app:app"
 
 [build-system]
 requires = ["setuptools"]
