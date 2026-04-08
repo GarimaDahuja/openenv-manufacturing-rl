@@ -1,9 +1,17 @@
+EPSILON = 1e-3
+
+
+def strict_unit_interval(value):
+    """Keep all grader outputs strictly inside (0, 1)."""
+    return float(min(1.0 - EPSILON, max(EPSILON, value)))
+
+
 def safe_score(numerator, denominator):
-    if denominator == 0:
+    if denominator <= 0:
         return 0.5
 
     score = (numerator + 0.1) / (denominator + 0.2)
-    return float(score)
+    return strict_unit_interval(score)
 
 
 def task_idle_time(env):
@@ -11,7 +19,7 @@ def task_idle_time(env):
     idle = sum(1 for m in env.state.machines if m.status == "idle")
 
     utilization = 1 - safe_score(idle, total)
-    return utilization
+    return strict_unit_interval(utilization)
 
 
 def task_completion_time(env, optimal_time=5):
@@ -20,8 +28,8 @@ def task_completion_time(env, optimal_time=5):
     if actual == 0:
         return 0.5
 
-    score = optimal_time / (actual + 1)  # avoids 1.0
-    return float(max(0.01, min(0.99, score)))
+    score = optimal_time / (actual + 1)
+    return strict_unit_interval(score)
 
 
 def task_breakdown_handling(env):
@@ -29,7 +37,7 @@ def task_breakdown_handling(env):
     working = sum(1 for m in env.state.machines if m.status != "broken")
 
     efficiency = safe_score(working, total)
-    return efficiency
+    return strict_unit_interval(efficiency)
 
 
 def overall_score(env):
@@ -38,4 +46,4 @@ def overall_score(env):
     t3 = task_breakdown_handling(env)
 
     score = 0.4 * t1 + 0.4 * t2 + 0.2 * t3
-    return float(max(0.01, min(0.99, score)))
+    return strict_unit_interval(score)

@@ -13,6 +13,9 @@ dependencies = [
 [project.scripts]
 server = "server.app:main"
 
+[tool.setuptools]
+packages = ["env", "server"]
+
 [build-system]
 requires = ["setuptools"]
 build-backend = "setuptools.build_meta"
