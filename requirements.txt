@@ -1,4 +1,6 @@
-openenv-core
+openenv-core==0.2.3
 pydantic
 openai
 huggingface_hub
+uvicorn
+fastapi
