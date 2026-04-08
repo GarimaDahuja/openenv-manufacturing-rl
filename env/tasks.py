@@ -2,18 +2,15 @@ EPSILON = 1e-3
 
 
 def strict_unit_interval(value):
-    """Keep all grader outputs strictly inside (0, 1)."""
     return float(min(1.0 - EPSILON, max(EPSILON, value)))
 
 
 def _default_state():
     from env.env import ManufacturingEnv
-
     return ManufacturingEnv().reset()
 
 
 def _resolve_state(subject):
-    """Accept an env instance, a state object, or None from validators."""
     if subject is None:
         return _default_state()
 
@@ -23,9 +20,6 @@ def _resolve_state(subject):
 
     if hasattr(subject, "machines") and hasattr(subject, "job_queue"):
         return subject
-
-    if isinstance(subject, dict):
-        return _default_state()
 
     return _default_state()
 

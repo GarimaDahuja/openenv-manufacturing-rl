@@ -10,7 +10,8 @@ action: Action
 observation: State
 
 environment:
-  entry_point: manufacturing_env.env:ManufacturingEnv
+  entry_point: env.env:ManufacturingEnv
+
 
 observation_space:
   type: object
@@ -73,12 +74,12 @@ action_space:
 tasks:
   - name: minimize_idle_time
     description: Keep machines busy
-    grader: manufacturing_env.tasks:task_idle_time
+    grader: tasks:task_idle_time
 
   - name: optimize_completion_time
     description: Minimize total completion time
-    grader: manufacturing_env.tasks:task_completion_time
+    grader: tasks:task_completion_time
 
   - name: handle_machine_failures
     description: Maintain performance despite breakdowns
-    grader: manufacturing_env.tasks:task_breakdown_handling
+    grader: tasks:task_breakdown_handling
