@@ -46,4 +46,4 @@ def overall_score(env):
 
     score = 0.4 * t1 + 0.4 * t2 + 0.2 * t3
 
-    return clamp_score(score)
+    return float(clamp_score(score))

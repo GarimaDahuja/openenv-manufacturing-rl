@@ -64,10 +64,13 @@ action_space:
 
 tasks:
   - name: minimize_idle_time
-    description: Keep machines busy to maximize utilization
+    description: Keep machines busy
+    grader: env.tasks:task_idle_time
 
   - name: optimize_completion_time
-    description: Complete all jobs as quickly as possible
+    description: Minimize total completion time
+    grader: env.tasks:task_completion_time
 
   - name: handle_machine_failures
-    description: Maintain performance despite machine breakdowns
+    description: Maintain performance despite breakdowns
+    grader: env.tasks:task_breakdown_handling
