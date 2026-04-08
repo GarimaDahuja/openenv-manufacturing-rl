@@ -36,7 +36,6 @@ def task_idle_time(env):
     state = _resolve_state(env)
     total = len(state.machines)
     idle = sum(1 for m in state.machines if m.status == "idle")
-
     utilization = 1 - safe_score(idle, total)
     return strict_unit_interval(utilization)
 
@@ -56,7 +55,6 @@ def task_breakdown_handling(env):
     state = _resolve_state(env)
     total = len(state.machines)
     working = sum(1 for m in state.machines if m.status != "broken")
-
     efficiency = safe_score(working, total)
     return strict_unit_interval(efficiency)
 
@@ -65,6 +63,5 @@ def overall_score(env):
     t1 = task_idle_time(env)
     t2 = task_completion_time(env)
     t3 = task_breakdown_handling(env)
-
     score = 0.4 * t1 + 0.4 * t2 + 0.2 * t3
     return strict_unit_interval(score)

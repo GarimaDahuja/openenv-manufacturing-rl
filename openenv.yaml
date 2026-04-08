@@ -4,14 +4,13 @@ version: 0.1
 description: Manufacturing process optimization environment for OpenEnv
 type: space
 runtime: fastapi
-app: manufacturing_env.server.app:app
+app: server.app:app
 port: 7860
 action: Action
 observation: State
 
 environment:
   entry_point: env.env:ManufacturingEnv
-
 
 observation_space:
   type: object
@@ -34,7 +33,6 @@ observation_space:
           - status
           - remaining_time
           - breakdown_prob
-
     job_queue:
       type: array
       items:
@@ -50,10 +48,8 @@ observation_space:
           - id
           - processing_time
           - priority
-
     current_time:
       type: integer
-
   required:
     - machines
     - job_queue
@@ -66,7 +62,6 @@ action_space:
       type: integer
     job_id:
       type: integer
-
   required:
     - machine_id
     - job_id

@@ -12,14 +12,10 @@ dependencies = [
 ]
 
 [project.scripts]
-server = "manufacturing_env.server.app:main"
+server = "server.app:main"
 
 [tool.setuptools]
-include-package-data = true
-packages = ["manufacturing_env", "manufacturing_env.server", "env", "server"]
-
-[tool.setuptools.package-data]
-manufacturing_env = ["openenv.yaml"]
+packages = ["env", "server"]
 
 [build-system]
 requires = ["setuptools"]
