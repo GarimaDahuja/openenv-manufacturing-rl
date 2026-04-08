@@ -1,3 +1,12 @@
+---
+title: Manufacturing Process Optimization
+emoji: ⚙️
+colorFrom: blue
+colorTo: green
+sdk: docker
+pinned: false
+---
+
 # Manufacturing Process Optimization (OpenEnv RL)
 
 ## Overview
