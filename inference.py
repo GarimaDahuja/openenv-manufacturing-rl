@@ -63,6 +63,3 @@ def run_inference():
 
 if __name__ == "__main__":
     run_inference()
-
-    while True:
-        time.sleep(60)
