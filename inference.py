@@ -1,18 +1,20 @@
 import os
-import time
 from openai import OpenAI
 from env.env import ManufacturingEnv
 from agent import BaselineAgent
 
-#req  env variables
+# REQUIRED ENV VARIABLES
 API_BASE_URL = os.getenv("API_BASE_URL", "https://api.openai.com/v1")
 MODEL_NAME = os.getenv("MODEL_NAME", "gpt-4.1-mini")
-HF_TOKEN = os.getenv("HF_TOKEN", "dummy")
+API_KEY = os.getenv("API_KEY")  # ✅ FIXED
 
-#OpenAI client
+if API_KEY is None:
+    raise ValueError("API_KEY environment variable is required")
+
+# OpenAI client
 client = OpenAI(
     base_url=API_BASE_URL,
-    api_key=HF_TOKEN
+    api_key=API_KEY
 )
 
 def run_inference():
@@ -30,6 +32,16 @@ def run_inference():
 
     try:
         while not done:
+            # ✅ REQUIRED LLM CALL (VERY IMPORTANT)
+            _ = client.chat.completions.create(
+                model=MODEL_NAME,
+                messages=[
+                    {"role": "user", "content": "Choose next action"}
+                ],
+                max_tokens=5
+            )
+
+            # Your existing logic
             action = agent.select_action(state)
 
             state, reward, done, _ = env.step(action)
