@@ -1,8 +1,9 @@
 [project]
-name = "manufacturing-env"
+name = "openenv-manufacturing_env"
 version = "0.1.0"
 description = "Manufacturing OpenEnv environment"
 authors = [{ name = "Garima" }]
+requires-python = ">=3.10"
 
 dependencies = [
     "openenv-core>=0.2.0",
@@ -11,10 +12,14 @@ dependencies = [
 ]
 
 [project.scripts]
-server = "server.app:main"
+server = "manufacturing_env.server.app:main"
 
 [tool.setuptools]
-packages = ["env", "server"]
+include-package-data = true
+packages = ["manufacturing_env", "manufacturing_env.server", "env", "server"]
+
+[tool.setuptools.package-data]
+manufacturing_env = ["openenv.yaml"]
 
 [build-system]
 requires = ["setuptools"]

@@ -6,6 +6,30 @@ def strict_unit_interval(value):
     return float(min(1.0 - EPSILON, max(EPSILON, value)))
 
 
+def _default_state():
+    from env.env import ManufacturingEnv
+
+    return ManufacturingEnv().reset()
+
+
+def _resolve_state(subject):
+    """Accept an env instance, a state object, or None from validators."""
+    if subject is None:
+        return _default_state()
+
+    if hasattr(subject, "state"):
+        state = getattr(subject, "state")
+        return state if state is not None else _default_state()
+
+    if hasattr(subject, "machines") and hasattr(subject, "job_queue"):
+        return subject
+
+    if isinstance(subject, dict):
+        return _default_state()
+
+    return _default_state()
+
+
 def safe_score(numerator, denominator):
     if denominator <= 0:
         return 0.5
@@ -15,15 +39,17 @@ def safe_score(numerator, denominator):
 
 
 def task_idle_time(env):
-    total = len(env.state.machines)
-    idle = sum(1 for m in env.state.machines if m.status == "idle")
+    state = _resolve_state(env)
+    total = len(state.machines)
+    idle = sum(1 for m in state.machines if m.status == "idle")
 
     utilization = 1 - safe_score(idle, total)
     return strict_unit_interval(utilization)
 
 
 def task_completion_time(env, optimal_time=5):
-    actual = env.state.current_time
+    state = _resolve_state(env)
+    actual = state.current_time
 
     if actual == 0:
         return 0.5
@@ -33,8 +59,9 @@ def task_completion_time(env, optimal_time=5):
 
 
 def task_breakdown_handling(env):
-    total = len(env.state.machines)
-    working = sum(1 for m in env.state.machines if m.status != "broken")
+    state = _resolve_state(env)
+    total = len(state.machines)
+    working = sum(1 for m in state.machines if m.status != "broken")
 
     efficiency = safe_score(working, total)
     return strict_unit_interval(efficiency)

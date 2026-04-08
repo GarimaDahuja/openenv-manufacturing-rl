@@ -1,8 +1,16 @@
-name: manufacturing-env
+spec_version: 1
+name: manufacturing_env
 version: 0.1
+description: Manufacturing process optimization environment for OpenEnv
+type: space
+runtime: fastapi
+app: manufacturing_env.server.app:app
+port: 7860
+action: Action
+observation: State
 
 environment:
-  entry_point: env.env:ManufacturingEnv
+  entry_point: manufacturing_env.env:ManufacturingEnv
 
 observation_space:
   type: object
@@ -65,12 +73,12 @@ action_space:
 tasks:
   - name: minimize_idle_time
     description: Keep machines busy
-    grader: env.tasks:task_idle_time
+    grader: manufacturing_env.tasks:task_idle_time
 
   - name: optimize_completion_time
     description: Minimize total completion time
-    grader: env.tasks:task_completion_time
+    grader: manufacturing_env.tasks:task_completion_time
 
   - name: handle_machine_failures
     description: Maintain performance despite breakdowns
-    grader: env.tasks:task_breakdown_handling
+    grader: manufacturing_env.tasks:task_breakdown_handling
