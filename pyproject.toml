@@ -1,0 +1,10 @@
+[project]
+name = "manufacturing-env"
+version = "0.1.0"
+description = "Manufacturing process optimization OpenEnv environment"
+authors = [{ name = "Garima" }]
+dependencies = []
+
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
