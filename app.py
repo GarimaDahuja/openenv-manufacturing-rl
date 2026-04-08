@@ -10,7 +10,9 @@ env = ManufacturingEnv()
 @app.post("/reset")
 def reset():
     state = env.reset()
-    return {"observation": state}
+    return {
+        "observation": state
+    }
 
 
 @app.post("/step")
