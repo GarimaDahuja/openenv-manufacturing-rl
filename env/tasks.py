@@ -1,42 +1,35 @@
-def clamp_score(score):
-    return max(0.01, min(0.99, score))
+def safe_score(numerator, denominator):
+    if denominator == 0:
+        return 0.5
+
+    score = (numerator + 0.1) / (denominator + 0.2)
+    return float(score)
 
 
 def task_idle_time(env):
-    total_machines = len(env.state.machines)
+    total = len(env.state.machines)
+    idle = sum(1 for m in env.state.machines if m.status == "idle")
 
-    if total_machines == 0:
-        return 0.5  # neutral
-
-    idle_machines = sum(1 for m in env.state.machines if m.status == "idle")
-
-    utilization = 1 - (idle_machines / total_machines)
-
-    return clamp_score(utilization)
+    utilization = 1 - safe_score(idle, total)
+    return utilization
 
 
 def task_completion_time(env, optimal_time=5):
-    actual_time = env.state.current_time
+    actual = env.state.current_time
 
-    if actual_time == 0:
+    if actual == 0:
         return 0.5
 
-    score = optimal_time / actual_time
-
-    return clamp_score(score)
+    score = optimal_time / (actual + 1)  # avoids 1.0
+    return float(max(0.01, min(0.99, score)))
 
 
 def task_breakdown_handling(env):
-    total_machines = len(env.state.machines)
+    total = len(env.state.machines)
+    working = sum(1 for m in env.state.machines if m.status != "broken")
 
-    if total_machines == 0:
-        return 0.5
-
-    working_machines = sum(1 for m in env.state.machines if m.status != "broken")
-
-    efficiency = working_machines / total_machines
-
-    return clamp_score(efficiency)
+    efficiency = safe_score(working, total)
+    return efficiency
 
 
 def overall_score(env):
@@ -45,5 +38,4 @@ def overall_score(env):
     t3 = task_breakdown_handling(env)
 
     score = 0.4 * t1 + 0.4 * t2 + 0.2 * t3
-
-    return float(clamp_score(score))
+    return float(max(0.01, min(0.99, score)))
